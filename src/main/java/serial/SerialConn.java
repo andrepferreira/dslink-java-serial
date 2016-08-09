@@ -58,6 +58,7 @@ public class SerialConn {
 	}
 	
 	void restoreLastSession() {
+		node.setValueType(ValueType.STRING);
 		node.clearChildren();
 		init();
 	}
@@ -105,7 +106,7 @@ public class SerialConn {
 	}
 	
 	/* Open the serial port and set up actions which should be available while the
-	   port is open. */
+	 * port is open. */
 	private void connect() {
 		if (serialPort != null) return;
 		
@@ -138,7 +139,7 @@ public class SerialConn {
 	}
 	
 	/* Close the serial port and set up actions which should be available while the port
-	   is closed. Also discard any bytes that were read since the last complete message. */
+	 * is closed. Also discard any bytes that were read since the last complete message. */
 	private void disconnect() {
 		message = null;
 		if (serialPort == null) return;
@@ -157,7 +158,7 @@ public class SerialConn {
 	}
 	
 	/* Setup the node so we start listening for serial data when the node is subscribed to,
-	   and stop when it's unsubscribed from. */
+	 * and stop when it's unsubscribed from. */
 	private void setupNode() {
 		node.getListener().setOnSubscribeHandler(new Handler<Node>() {
 			public void handle(Node event) {
@@ -172,8 +173,8 @@ public class SerialConn {
 	}
 	
 	/* Read and handle all available bytes from the serial port. Once no bytes are
-	   available, wait half a second and check for more. (If serial port is closed,
-	   just wait until it is open) */
+	 * available, wait half a second and check for more. (If serial port is closed,
+	 * just wait until it is open) */
 	private void subscribe() {
 		if (future != null) return;
 		ScheduledThreadPoolExecutor stpe = Objects.getDaemonThreadPool();
@@ -185,7 +186,7 @@ public class SerialConn {
 	}
 	
 	/* Stop reading (or trying to read) bytes from the serial port. Discard any bytes
-	   that were read since the last complete message. */
+	 * that were read since the last complete message. */
 	private void unsubscribe() {
 		message = null;
 		if (future == null) return;
@@ -283,7 +284,7 @@ public class SerialConn {
 	}
 	
 	/* Handle an invocation of the edit action, restarting the connection to the
-	   serial port with the new parameters. */
+	 * serial port with the new parameters. */
 	private void handleEdit(ActionResult event) {
 		String name = event.getParameter("Name", ValueType.STRING).getString();
 		String com;

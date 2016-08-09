@@ -51,12 +51,36 @@ public class SerialLink {
 		makePortScanAction();
 	}
 	
+	/* Initialize a SerialConn object for each connection node that was deserialized, 
+	 * ensuring it has all the required attributes. */
 	private void restoreLastSession() {
-		node.clearChildren();
+		if (node.getChildren() == null) return;
+		for (Node child: node.getChildren().values()) {
+			if (child.getAttribute("Serial Port") == null) {
+				node.removeChild(child);
+			} else {
+				checkAttribute(child, "Baud Rate", new Value(9600));
+				checkAttribute(child, "Data Bits", new Value(8));
+				checkAttribute(child, "Stop Bits", new Value(1));
+				checkAttribute(child, "Parity", new Value(0));
+				checkAttribute(child, "Start Code", new Value("0x05"));
+				checkAttribute(child, "End Code", new Value("0x0D"));
+				checkAttribute(child, "Charset", new Value(defaultCharset));
+				
+				SerialConn sc = new SerialConn(this, child);
+				sc.restoreLastSession();
+			}
+		}
+	}
+	
+	/* Checks that Node n has the specified attribute. If not, sets the attribute to defaultValue. */
+	private static void checkAttribute(Node n, String attributeName, Value defaultValue) {
+		Value val = n.getAttribute(attributeName);
+		if (val == null) n.setAttribute(attributeName,  defaultValue);
 	}
 	
 	/* Creates the action that refreshes the serial ports available through drop-downs
-	   in other actions. */
+	 * in other actions. */
 	private void makePortScanAction() {
 		Action act = new Action(Permission.READ, new Handler<ActionResult>() {
 			public void handle(ActionResult event) {
@@ -67,7 +91,7 @@ public class SerialLink {
 	}
 	
 	/* Re-creates the 'add connection' action and the edit actions, so they accurately
-	   reflect which serial ports are currently available. */
+	 * reflect which serial ports are currently available. */
 	private void doPortScan() {
 		makeAddConnAction();
 		
@@ -120,7 +144,7 @@ public class SerialLink {
 	}
 	
 	/* Creates a node for a new serial connection, and initializes an instance 
-	   of the SerialConn class, which handles this connection. */
+	 * of the SerialConn class, which handles this connection. */
 	private void handleAddConn(ActionResult event) {
 		String name = event.getParameter("Name", ValueType.STRING).getString();
 		
