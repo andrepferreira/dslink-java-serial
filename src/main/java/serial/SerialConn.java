@@ -381,6 +381,8 @@ public class SerialConn {
 			}
 		});
 		act.addParameter(new Parameter("Message", ValueType.STRING));
+		act.addParameter(new Parameter("Start Code", ValueType.STRING, node.getAttribute("Start Code")));
+		act.addParameter(new Parameter("End Code", ValueType.STRING, node.getAttribute("End Code")));
 		Node anode = node.getChild("send message");
 		if (anode == null) node.createChild("send message").setAction(act).build().setSerializable(false);
 		else anode.setAction(act);
@@ -389,6 +391,10 @@ public class SerialConn {
 	/* Sends a message to the serial port. */
 	private void handleSend(ActionResult event) {
 		String msgStr = event.getParameter("Message", ValueType.STRING).getString();
+		
+		int start = parseCode(event.getParameter("Start Code", ValueType.STRING).getString());
+		int end = parseCode(event.getParameter("End Code", ValueType.STRING).getString());
+		
 		String charset = node.getAttribute("Charset").getString();
 		byte[] bytes;
 		if ("None".equals(charset)) {
@@ -415,8 +421,8 @@ public class SerialConn {
 				return;
 			}
 		}
-		bytes[0] = (byte) startCode;
-		bytes[bytes.length - 1] = (byte) endCode;
+		bytes[0] = (byte) start;
+		bytes[bytes.length - 1] = (byte) end;
 		try {
 			serialPort.getOutputStream().write(bytes);
 			serialPort.getOutputStream().flush();
