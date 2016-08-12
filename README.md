@@ -19,3 +19,5 @@ If you are writing a DSLink for a specific protocol, you will probably want to r
 You will need to modify SerialConn.readWhileAvailable() to customize how the DSLink parses incoming data. As long as the node is subscibed to, readWhileAvailable() gets called repeatedly, with a half-second delay between the end of one call and the start of the next (See SerialConn.subscribe()). So the code inside the while loop of this method executes for every byte that's read from the port.
 
 Edit SerialConn.handleSend() to change how outgoing messages are encoded. You may also want to edit SerialConn.makeSendAction() to change what parameters the "send message" action has.
+
+For an example of a protocol-specific DSLink based on this one, see https://github.com/IOT-DSA/dslink-java-dmx-device 
