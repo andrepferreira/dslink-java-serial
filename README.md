@@ -1,5 +1,6 @@
 # dslink-java-serial
-A generic DSLink for serial communication
+A slightly modified version of the original generic DSLink for serial communication.
+This version will read the serial port buffer until either the end code is found or the end of the buffer is reached. This is useful for serial devices that do not have a specific end code, but simply respond with a string of data.
 
 ## Usage
 Add a connection by specifying a serial port, baud rate, etc. Available serial ports are listed in the dropdown in the "add connection" action. You can rescan the system for available ports using the "scan for serial ports" action.
