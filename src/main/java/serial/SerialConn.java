@@ -195,6 +195,7 @@ public class SerialConn {
 	}
 	
 	/* Read and handle all available bytes from the serial port. */
+	/* AF - Added changes to read strings that do not have an end code */
 	private void readWhileAvailable() {
 		if (serialPort == null) return;
 		try {
@@ -208,9 +209,15 @@ public class SerialConn {
 					}
 				} else {
 					// 'message' not null, so we're in the process of reading a message
-					if (b == endCode) {
+					// Also check if end of string in case not end code exists
+					int c = serialPort.getInputStream().available();
+					if ((b == endCode) || (c == 0)) {
 						// The message is complete, so update the node accordingly
 						// and set 'message' back to null
+						// If no endCode then append the last byte to 'message' and finish up
+						if (c == 0) {
+						message.add((byte) b);
+						}
 						finishRead();
 						message = null;
 					} else {
