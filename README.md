@@ -11,4 +11,6 @@ The "Charset" specifies how the connection will parse incoming messages and enco
 
 The connection listens on its serial port as long as its node is subscribed to, and the node's value is always set to the last message recieved. Messages can be sent to the serial port using the "send message" action, which allows you to choose start and end codes different from those used for incoming messages.
 
-This dslink is based entirely on the dslink-jave-serial so all credit to the authors there.
+## Credits and references
+
+1. This dslink is based entirely on the dslink-java-serial so all credit to the authors there.
