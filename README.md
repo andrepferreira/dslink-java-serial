@@ -15,3 +15,6 @@ The connection listens on its serial port as long as its node is subscribed to, 
 ## Credits and references
 
 1. This dslink is based entirely on the original dslink-java-serial (https://developer.cisco.com/codeexchange/github/repo/IOT-DSA/dslink-java-serial) so all credit to the authors there.
+
+
+[![published](https://static.production.devnetcloud.com/codeexchange/assets/images/devnet-published.svg)](https://developer.cisco.com/codeexchange/github/repo/andrepferreira/dslink-java-serial_no_end_code)
